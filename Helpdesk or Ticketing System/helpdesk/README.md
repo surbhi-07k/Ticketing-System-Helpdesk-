@@ -69,3 +69,13 @@ MongoDB Compass (Local)
 Connection URL:
 
 mongodb://127.0.0.1:27017/helpdesk
+
+### Phase 3 Completed
+
+* Authentication module started
+* Register API created
+* User registration working
+* Duplicate email validation added
+* Password hashing using bcryptjs
+* User data stored in MongoDB
+* Postman testing completed
