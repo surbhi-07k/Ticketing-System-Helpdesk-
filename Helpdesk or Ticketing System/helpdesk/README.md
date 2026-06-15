@@ -89,3 +89,52 @@ mongodb://127.0.0.1:27017/helpdesk
 * Token expiry set to 7 days
 * Postman testing completed
 
+### Phase 5 Completed
+
+* JWT authentication middleware created
+* Protected routes implemented
+* Token verification using jwt.verify()
+* Logged-in user retrieval endpoint (/auth/me)
+* req.user functionality implemented
+* Unauthorized access protection added
+* Postman testing completed
+
+## Auth Endpoints
+
+POST /api/auth/register
+
+POST /api/auth/login
+
+GET /api/auth/me
+
+## Module 1 - Authentication (Completed)
+
+### Features
+
+- User Registration
+- User Login
+- Password Hashing using bcryptjs
+- JWT Token Generation
+- JWT Verification Middleware
+- Protected Routes
+- Get Logged-in User Endpoint
+
+### API Endpoints
+
+POST /api/auth/register
+
+POST /api/auth/login
+
+GET /api/auth/me
+
+## Phase 6 Completed
+
+### Ticket Model
+
+- Ticket schema created
+- Ticket status workflow added
+- Ticket priority levels added
+- Ticket categories added
+- Customer relationship added
+- Agent assignment support added
+
