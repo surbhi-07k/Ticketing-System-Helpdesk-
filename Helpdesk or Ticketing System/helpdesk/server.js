@@ -2,12 +2,19 @@ import express from "express";
 import dotenv from "dotenv";
 
 import connectDB from "./src/config/db.js";
+import authRoutes from "./src/routes/authRoutes.js";
 
 dotenv.config();
 
 connectDB();
 
 const app = express();
+
+// Parse JSON body
+app.use(express.json());
+
+// Routes
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Helpdesk API Running");
