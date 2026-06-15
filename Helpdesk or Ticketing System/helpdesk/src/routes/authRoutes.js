@@ -3,7 +3,7 @@ import express from "express";
 import {
   registerUser,
   loginUser,
-  getMe,
+  getMe
 } from "../controllers/authController.js";
 
 import protect from "../middleware/authMiddleware.js";
