@@ -79,3 +79,13 @@ mongodb://127.0.0.1:27017/helpdesk
 * Password hashing using bcryptjs
 * User data stored in MongoDB
 * Postman testing completed
+
+### Phase 4 Completed
+
+* Login API created
+* JWT token generation implemented
+* Password verification using bcrypt.compare()
+* Login validation added
+* Token expiry set to 7 days
+* Postman testing completed
+
