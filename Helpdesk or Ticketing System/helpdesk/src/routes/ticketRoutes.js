@@ -2,6 +2,7 @@ import express from "express";
 
 import {
   createTicket,
+  getMyTickets,
 } from "../controllers/ticketController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -15,4 +16,11 @@ router.post(
   createTicket
 );
 
+router.get(
+  "/my",
+  protect,
+  getMyTickets
+);
+
 export default router;
+
