@@ -102,3 +102,58 @@ export const getTicketById =
       });
     }
   };
+
+  export const updateTicketStatus =
+  async (req, res) => {
+    try {
+      const { status } =
+        req.body;
+
+      const allowedStatuses = [
+        "open",
+        "in-progress",
+        "resolved",
+        "closed",
+      ];
+
+      if (
+        !allowedStatuses.includes(
+          status
+        )
+      ) {
+        return res.status(400).json({
+          message:
+            "Invalid status",
+        });
+      }
+
+      const ticket =
+        await Ticket.findById(
+          req.params.id
+        );
+
+      if (!ticket) {
+        return res.status(404).json({
+          message:
+            "Ticket not found",
+        });
+      }
+
+      ticket.status = status;
+
+      await ticket.save();
+
+      res.status(200).json({
+        message:
+          "Ticket status updated",
+        ticket,
+      });
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Server Error",
+      });
+    }
+  };
