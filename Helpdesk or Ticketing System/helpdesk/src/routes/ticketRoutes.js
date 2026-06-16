@@ -7,6 +7,7 @@ import {
   updateTicketStatus,
   getAllTickets,
   assignTicket,
+  getAssignedTickets
 } from "../controllers/ticketController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -35,6 +36,13 @@ router.get(
   "/my",
   protect,
   getMyTickets
+);
+
+router.get(
+  "/assigned",
+  protect,
+  authorize("agent"),
+  getAssignedTickets
 );
 
 router.get(

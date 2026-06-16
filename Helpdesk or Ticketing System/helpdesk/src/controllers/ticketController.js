@@ -242,3 +242,26 @@ export const assignTicket =
       });
     }
   };
+
+export const getAssignedTickets =
+  async (req, res) => {
+    try {
+      const tickets =
+        await Ticket.find({
+          assignedTo: req.user._id,
+        }).sort({
+          createdAt: -1,
+        });
+
+      res.status(200).json({
+        count: tickets.length,
+        tickets,
+      });
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+        message: "Server Error",
+      });
+    }
+  };
