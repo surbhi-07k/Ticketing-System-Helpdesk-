@@ -1,4 +1,5 @@
 import Ticket from "../models/Ticket.js";
+import User from "../models/User.js";
 
 export const createTicket = async (
   req,
@@ -173,6 +174,65 @@ export const getAllTickets =
         tickets,
       });
 
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Server Error",
+      });
+    }
+  };
+
+export const assignTicket =
+  async (req, res) => {
+    try {
+      const { agentId } =
+        req.body;
+
+      const ticket =
+        await Ticket.findById(
+          req.params.id
+        );
+
+      if (!ticket) {
+        return res.status(404).json({
+          message:
+            "Ticket not found",
+        });
+      }
+
+      const agent =
+        await User.findById(
+          agentId
+        );
+
+      if (!agent) {
+        return res.status(404).json({
+          message:
+            "Agent not found",
+        });
+      }
+
+      if (
+        agent.role !== "agent"
+      ) {
+        return res.status(400).json({
+          message:
+            "User is not an agent",
+        });
+      }
+
+      ticket.assignedTo =
+        agent._id;
+
+      await ticket.save();
+
+      res.status(200).json({
+        message:
+          "Ticket assigned successfully",
+        ticket,
+      });
     } catch (error) {
       console.log(error);
 

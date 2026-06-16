@@ -6,6 +6,7 @@ import {
   getTicketById,
   updateTicketStatus,
   getAllTickets,
+  assignTicket,
 } from "../controllers/ticketController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -50,6 +51,13 @@ router.patch(
     "agent"
   ),
   updateTicketStatus
+);
+
+router.patch(
+  "/:id/assign",
+  protect,
+  authorize("admin"),
+  assignTicket
 );
 
 export default router;

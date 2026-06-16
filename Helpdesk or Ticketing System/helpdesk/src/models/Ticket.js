@@ -35,17 +35,6 @@ const ticketSchema =
         default: "medium",
       },
 
-      status: {
-        type: String,
-        enum: [
-          "open",
-          "in-progress",
-          "resolved",
-          "closed",
-        ],
-        default: "open",
-      },
-
       customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -56,8 +45,20 @@ const ticketSchema =
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         default: null,
+        },
+
+      status: {
+        type: String,
+        enum: [
+          "open",
+          "in-progress",
+          "resolved",
+          "closed",
+        ],
+        default: "open",
       },
     },
+    
     {
       timestamps: true,
     }
