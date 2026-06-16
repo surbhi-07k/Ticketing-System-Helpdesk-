@@ -7,7 +7,8 @@ import {
   updateTicketStatus,
   getAllTickets,
   assignTicket,
-  getAssignedTickets
+  getAssignedTickets,
+  deleteTicket,
 } from "../controllers/ticketController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -66,6 +67,13 @@ router.patch(
   protect,
   authorize("admin"),
   assignTicket
+);
+
+router.delete(
+  "/:id",
+  protect,
+  authorize("admin"),
+  deleteTicket
 );
 
 export default router;
