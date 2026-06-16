@@ -107,26 +107,7 @@ export const getTicketById =
 export const updateTicketStatus =
   async (req, res) => {
     try {
-      const { status } =
-        req.body;
-
-      const allowedStatuses = [
-        "open",
-        "in-progress",
-        "resolved",
-        "closed",
-      ];
-
-      if (
-        !allowedStatuses.includes(
-          status
-        )
-      ) {
-        return res.status(400).json({
-          message:
-            "Invalid status",
-        });
-      }
+      const { status } = req.body;
 
       const ticket =
         await Ticket.findById(
@@ -140,13 +121,43 @@ export const updateTicketStatus =
         });
       }
 
+      const transitions = {
+        open: ["in-progress"],
+
+        "in-progress": [
+          "resolved",
+        ],
+
+        resolved: ["closed"],
+
+        closed: [],
+      };
+
+      const currentStatus =
+        ticket.status;
+
+      const allowedStatuses =
+        transitions[
+          currentStatus
+        ];
+
+      if (
+        !allowedStatuses.includes(
+          status
+        )
+      ) {
+        return res.status(400).json({
+          message: `Cannot change status from ${currentStatus} to ${status}`,
+        });
+      }
+
       ticket.status = status;
 
       await ticket.save();
 
       res.status(200).json({
         message:
-          "Ticket status updated",
+          "Ticket status updated successfully",
         ticket,
       });
     } catch (error) {
