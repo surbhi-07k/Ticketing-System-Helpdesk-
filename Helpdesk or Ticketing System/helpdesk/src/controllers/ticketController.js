@@ -103,7 +103,7 @@ export const getTicketById =
     }
   };
 
-  export const updateTicketStatus =
+export const updateTicketStatus =
   async (req, res) => {
     try {
       const { status } =
@@ -148,6 +148,31 @@ export const getTicketById =
           "Ticket status updated",
         ticket,
       });
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Server Error",
+      });
+    }
+  };
+
+export const getAllTickets =
+  async (req, res) => {
+    try {
+
+      const tickets =
+        await Ticket.find()
+          .sort({
+            createdAt: -1,
+          });
+
+      res.status(200).json({
+        count: tickets.length,
+        tickets,
+      });
+
     } catch (error) {
       console.log(error);
 
