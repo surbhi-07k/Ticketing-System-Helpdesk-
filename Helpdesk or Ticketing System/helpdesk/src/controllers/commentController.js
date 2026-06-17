@@ -69,58 +69,69 @@ export const addComment = async (
   }
 };
 
-export const getComments =
-  async (req, res) => {
-    try {
-      const ticketId =
-        req.params.id;
+export const getComments = async (
+  req,
+  res
+) => {
+  try {
+    const ticketId =
+      req.params.id;
 
-      const ticket =
-        await Ticket.findById(
-          ticketId
-        );
+    const ticket =
+      await Ticket.findById(
+        ticketId
+      );
 
-      if (!ticket) {
-        return res.status(404).json({
-          message:
-            "Ticket not found",
-        });
-      }
-
-      let comments;
-
-      if (
-        req.user.role ===
-        "customer"
-      ) {
-        comments =
-          await Comment.find({
-            ticket: ticketId,
-            isInternal: false,
-          }).sort({
-            createdAt: 1,
-          });
-      } else {
-        comments =
-          await Comment.find({
-            ticket: ticketId,
-          }).sort({
-            createdAt: 1,
-          });
-      }
-
-      res.status(200).json({
+    if (!ticket) {
+      return res.status(404).json({
         message:
-          "Comments fetched successfully",
-
-        comments,
-      });
-    } catch (error) {
-      console.log(error);
-
-      res.status(500).json({
-        message:
-          "Server Error",
+          "Ticket not found",
       });
     }
-  };
+
+    let comments;
+
+    if (
+      req.user.role ===
+      "customer"
+    ) {
+      comments =
+        await Comment.find({
+          ticket: ticketId,
+          isInternal: false,
+        })
+          .populate(
+            "user",
+            "name email role"
+          )
+          .sort({
+            createdAt: 1,
+          });
+    } else {
+      comments =
+        await Comment.find({
+          ticket: ticketId,
+        })
+          .populate(
+            "user",
+            "name email role"
+          )
+          .sort({
+            createdAt: 1,
+          });
+    }
+
+    res.status(200).json({
+      message:
+        "Comments fetched successfully",
+      comments,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message:
+        "Server Error",
+    });
+  }
+};
