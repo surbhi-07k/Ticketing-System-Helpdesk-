@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import ticketRoutes from "./src/routes/ticketRoutes.js";
+import commentRoutes from "./src/routes/commentRoutes.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tickets", ticketRoutes);
+app.use("/api/tickets", commentRoutes);
 
 app.get("/", (req, res) => {
   res.send("Helpdesk API Running....");

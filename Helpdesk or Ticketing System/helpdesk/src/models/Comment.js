@@ -22,6 +22,10 @@ const commentSchema =
         required: true,
         trim: true,
       },
+      isInternal: {
+        type: Boolean,
+        default: false,
+      },
     },
     {
       timestamps: true,
