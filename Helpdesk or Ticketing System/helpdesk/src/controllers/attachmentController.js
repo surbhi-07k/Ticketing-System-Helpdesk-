@@ -51,8 +51,13 @@ export const uploadAttachment =
 
       res.status(201).json({
         message:
-          "File uploaded successfully",
+            "File uploaded successfully",
+
         attachment,
+
+            fileUrl: `${req.protocol}://${req.get(
+            "host"
+            )}/${attachment.filePath}`,
       });
     } catch (error) {
       console.log(error);
