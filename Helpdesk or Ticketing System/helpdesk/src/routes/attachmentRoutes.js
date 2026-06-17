@@ -6,6 +6,7 @@ import upload from "../middleware/uploadMiddleware.js";
 
 import {
   uploadAttachment,
+  getAttachments,
 } from "../controllers/attachmentController.js";
 
 const router =
@@ -16,6 +17,12 @@ router.post(
   protect,
   upload.single("file"),
   uploadAttachment
+);
+
+router.get(
+  "/tickets/:id/attachments",
+  protect,
+  getAttachments
 );
 
 export default router;
