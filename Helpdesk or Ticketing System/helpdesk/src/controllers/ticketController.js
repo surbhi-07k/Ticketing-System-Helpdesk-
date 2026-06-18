@@ -1,6 +1,7 @@
 import Ticket from "../models/Ticket.js";
 import User from "../models/User.js";
 import calculateSLA from "../services/slaService.js";
+import checkSLABreach from "../utils/checkSLABreach.js";
 
 export const createTicket = async (
   req,
@@ -37,7 +38,7 @@ export const createTicket = async (
         assignedTo: agent
           ? agent._id
           : null,
-          
+
         tags: tags || [],
         attachments:
           attachments || [],
@@ -72,10 +73,22 @@ export const getMyTickets = async (
         createdAt: -1,
       });
 
+    const updatedTickets =
+      tickets.map((ticket) => {
+        const ticketObj =
+          ticket.toObject();
+
+        ticketObj.isSlaBreached =
+          checkSLABreach(ticket);
+
+        return ticketObj;
+      });
+
     res.status(200).json({
-      count: tickets.length,
-      tickets,
+      count: updatedTickets.length,
+      tickets: updatedTickets,
     });
+
   } catch (error) {
     console.log(error);
 
@@ -110,7 +123,14 @@ export const getTicketById =
         });
       }
 
-      res.status(200).json(ticket);
+      const ticketObj = ticket.toObject();
+
+        ticketObj.isSlaBreached =
+        checkSLABreach(ticket);
+
+      res.status(200).json(ticketObj);
+
+
     } catch (error) {
       console.log(error);
 
@@ -230,6 +250,17 @@ export const getAllTickets =
           .skip(skip)
           .limit(limit);
 
+      const updatedTickets =
+        tickets.map((ticket) => {
+          const ticketObj =
+            ticket.toObject();
+
+          ticketObj.isSlaBreached =
+            checkSLABreach(ticket);
+
+          return ticketObj;
+        });
+
       const totalTickets =
         await Ticket.countDocuments(
         filter
@@ -242,8 +273,8 @@ export const getAllTickets =
         totalPages: Math.ceil(
           totalTickets / limit
         ),
-        count: tickets.length,
-        tickets,
+        count: updatedTickets.length,
+        tickets: updatedTickets,
       });
 
     } catch (error) {
