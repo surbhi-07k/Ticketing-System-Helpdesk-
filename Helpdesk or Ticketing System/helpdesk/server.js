@@ -7,6 +7,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import ticketRoutes from "./src/routes/ticketRoutes.js";
 import commentRoutes from "./src/routes/commentRoutes.js";
 import attachmentRoutes from "./src/routes/attachmentRoutes.js";
+import adminRoutes from "./src/routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use("/api/tickets", ticketRoutes);
 app.use("/api/tickets", commentRoutes);
 app.use("/api", attachmentRoutes);
 app.use("/uploads", express.static("uploads"));
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
   res.send("Helpdesk API Running....");
