@@ -16,6 +16,11 @@ export const createTicket = async (
       attachments,
     } = req.body;
 
+    const agent = await User.findOne({
+      role: "agent",
+      isActive: true,
+    });
+
     const {
       responseDeadline,
       resolutionDeadline,
@@ -29,7 +34,10 @@ export const createTicket = async (
         category,
         priority,
         customer: req.user._id,
-
+        assignedTo: agent
+          ? agent._id
+          : null,
+          
         tags: tags || [],
         attachments:
           attachments || [],
