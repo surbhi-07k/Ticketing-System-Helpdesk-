@@ -11,6 +11,8 @@ export const createTicket = async (
       description,
       category,
       priority,
+      tags,
+      attachments,
     } = req.body;
 
     if (!title || !description) {
@@ -27,6 +29,9 @@ export const createTicket = async (
         category,
         priority,
         customer: req.user._id,
+        tags: tags || [],
+        attachments:
+          attachments || [],
       });
 
     res.status(201).json({
@@ -35,10 +40,10 @@ export const createTicket = async (
       ticket,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     res.status(500).json({
-      message: "Server Error",
+      message: error.message,
     });
   }
 };

@@ -47,11 +47,36 @@ const ticketSchema =
         default: null,
         },
 
+      attachments: [
+        {
+          type: String,
+        },
+      ],
+
+      tags: [
+        {
+          type: String,
+          trim: true,
+        },
+      ],
+
+      responseDeadline: {
+        type: Date,
+      },
+      resolutionDeadline: {
+        type: Date,
+      },
+      resolvedAt: {
+        type: Date,
+        default: null,
+      },
+
       status: {
         type: String,
         enum: [
           "open",
           "in-progress",
+          "waiting",
           "resolved",
           "closed",
         ],
