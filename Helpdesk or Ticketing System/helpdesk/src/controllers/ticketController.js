@@ -168,6 +168,10 @@ export const updateTicketStatus =
 
       ticket.status = status;
 
+      if (status === "resolved") {
+        ticket.resolvedAt = new Date();
+      }
+
       await ticket.save();
 
       res.status(200).json({
@@ -175,6 +179,7 @@ export const updateTicketStatus =
           "Ticket status updated successfully",
         ticket,
       });
+      
     } catch (error) {
       console.log(error);
 
