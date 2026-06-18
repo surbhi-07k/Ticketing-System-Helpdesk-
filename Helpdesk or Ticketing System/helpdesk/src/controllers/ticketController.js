@@ -179,7 +179,7 @@ export const updateTicketStatus =
           "Ticket status updated successfully",
         ticket,
       });
-      
+
     } catch (error) {
       console.log(error);
 
@@ -193,6 +193,15 @@ export const updateTicketStatus =
 export const getAllTickets =
   async (req, res) => {
     try {
+
+      const page =
+        parseInt(req.query.page) || 1;
+
+      const limit =
+        parseInt(req.query.limit) || 5;
+
+      const skip =
+        (page - 1) * limit;
 
       const filter = {};
 
@@ -215,9 +224,22 @@ export const getAllTickets =
         await Ticket.find(filter)
           .sort({
             createdAt: -1,
-          });
+          })
+          .skip(skip)
+          .limit(limit);
+
+      const totalTickets =
+        await Ticket.countDocuments(
+        filter
+      );
 
       res.status(200).json({
+        page,
+        limit,
+        totalTickets,
+        totalPages: Math.ceil(
+          totalTickets / limit
+        ),
         count: tickets.length,
         tickets,
       });

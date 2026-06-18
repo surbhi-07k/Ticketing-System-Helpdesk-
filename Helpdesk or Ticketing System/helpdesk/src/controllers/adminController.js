@@ -4,27 +4,49 @@ import User from "../models/User.js";
 export const getAllUsers =
   async (req, res) => {
     try {
+
+      const page =
+        parseInt(req.query.page) || 1;
+
+      const limit =
+        parseInt(req.query.limit) || 5;
+
+      const skip =
+        (page - 1) * limit;
+
       const users =
         await User.find()
           .select("-password")
           .sort({
             createdAt: -1,
-          });
+          })
+          .skip(skip)
+          .limit(limit);
+
+      const totalUsers =
+        await User.countDocuments();
 
       res.status(200).json({
-        message:
-          "Users fetched successfully",
+        page,
+        limit,
+        totalUsers,
+        totalPages: Math.ceil(
+          totalUsers / limit
+        ),
         count: users.length,
         users,
       });
+
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({
         message:
           "Server Error",
       });
     }
   };
-
+  
 export const updateUser =
   async (req, res) => {
     try {
