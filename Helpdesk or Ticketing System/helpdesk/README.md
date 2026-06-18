@@ -698,7 +698,7 @@ http://localhost:3000/uploads/file-name.png
 - Download documents
 - Browser accessible URLs
 
-## Phase 28 - Get All Users API
+## Phase 27 - Get All Users API
 
 ### Endpoint
 
@@ -714,7 +714,7 @@ Admin Only
 - Excludes password field
 - Sorted by newest users
 
-## Phase 29 - Update User API
+## Phase 28 - Update User API
 
 ### Endpoint
 
@@ -735,7 +735,7 @@ Admin Only
 - role
 - isActive
 
-## Phase 30 - Delete User API
+## Phase 29 - Delete User API
 
 ### Endpoint
 
@@ -751,7 +751,7 @@ Admin Only
 - User existence validation
 - Restricted to admins
 
-## Phase 31 - Analytics Overview API
+## Phase 30 - Analytics Overview API
 
 ### Endpoint
 
@@ -768,7 +768,7 @@ Admin Only
 - Resolved today
 - Average resolution time (hours)
 
-## Phase 32 - Analytics By Status API
+## Phase 31 - Analytics By Status API
 
 ### Endpoint
 
@@ -789,7 +789,7 @@ Returns ticket counts grouped by status.
 - resolved
 - closed
 
-## Phase 33 - Analytics By Agent API
+## Phase 32 - Analytics By Agent API
 
 ### Endpoint
 
@@ -809,7 +809,7 @@ Returns number of tickets assigned to each agent.
 - Agent details lookup
 - Ticket count per agent
 
-## Phase 34 - SLA Breaches API
+## Phase 33 - SLA Breaches API
 
 ### Purpose
 
@@ -872,6 +872,197 @@ A ticket is considered an SLA breach when:
 * Verified customer population
 * Verified assigned agent population
 * Verified breach count calculation
+
+### Status
+
+Completed Successfully
+
+## Phase 34 - Ticket Model Enhancement
+
+### Added Fields
+
+* attachments
+* tags
+* responseDeadline
+* resolutionDeadline
+* resolvedAt
+
+### Added Status
+
+* waiting
+
+### Testing
+
+Created ticket with:
+
+* Tags
+* Attachments
+
+Verified data is stored correctly in MongoDB.
+
+### Status
+
+Completed Successfully
+
+## Phase 35 - SLA Deadline Calculation Service
+
+### Purpose
+
+Automatically calculate SLA deadlines when a new ticket is created.
+
+### SLA Rules
+
+| Priority | Response Deadline | Resolution Deadline |
+| -------- | ----------------- | ------------------- |
+| Urgent   | 1 Hour            | 4 Hours             |
+| High     | 4 Hours           | 8 Hours             |
+| Medium   | 8 Hours           | 24 Hours            |
+| Low      | 24 Hours          | 72 Hours            |
+
+### Implementation
+
+Created:
+
+```text
+src/services/slaService.js
+```
+
+### Features
+
+* Calculates response deadline automatically
+* Calculates resolution deadline automatically
+* Uses priority-based SLA rules
+* Stores deadlines in the ticket document
+* Centralized SLA calculation logic
+
+### Example
+
+Priority: High
+
+Response Deadline = Current Time + 4 Hours
+
+Resolution Deadline = Current Time + 8 Hours
+
+### Testing Performed
+
+* Created ticket with High priority
+* Verified responseDeadline was generated
+* Verified resolutionDeadline was generated
+* Verified deadlines were saved in MongoDB
+* Verified SLA service integration with createTicket API
+
+### Status
+
+Completed Successfully
+
+
+## Phase 36 - Automatic Resolution Timestamp
+
+### Purpose
+
+Automatically record the date and time when a ticket is resolved.
+
+### Features
+
+* Sets resolvedAt when ticket status changes to resolved
+* Stores resolution timestamp in MongoDB
+* Returns resolvedAt in API responses
+* Supports future analytics and reporting
+
+### Testing
+
+* Updated ticket status from in-progress to resolved
+* Verified resolvedAt timestamp was generated automatically
+* Verified timestamp was saved in database
+
+### Status
+
+Completed Successfully
+
+
+## Phase 37 - Pagination
+
+### Purpose
+
+Improve API performance by returning records page by page instead of loading all records at once.
+
+### Implemented Pagination
+
+#### Tickets
+
+GET /api/tickets?page=1&limit=5
+
+#### Users
+
+GET /api/admin/users?page=1&limit=5
+
+### Features
+
+* page parameter
+* limit parameter
+* total record count
+* total pages calculation
+* efficient database queries using skip and limit
+
+### Example Response
+
+{
+"page": 1,
+"limit": 5,
+"totalPages": 3,
+"count": 5
+}
+
+### Status
+
+Completed Successfully
+
+## Phase 38 - Validation Middleware
+
+### Purpose
+
+Centralize request validation using middleware instead of placing validation logic inside controllers.
+
+### Features
+
+* Validates ticket creation requests
+* Ensures title is provided
+* Ensures description is provided
+* Returns consistent validation errors
+* Keeps controllers clean and maintainable
+
+### Middleware
+
+validateTicket.js
+
+### Testing
+
+* Rejected requests with missing title
+* Rejected requests with missing description
+* Allowed valid ticket creation requests
+
+### Status
+
+Completed Successfully
+
+## Phase 39 - Auto Ticket Assignment
+
+### Purpose
+
+Automatically assign newly created tickets to an available support agent.
+
+### Features
+
+* Finds an active agent during ticket creation
+* Automatically sets assignedTo
+* Falls back to null if no agent exists
+* Reduces manual ticket assignment
+
+### Testing
+
+* Created ticket as customer
+* Verified assignedTo was automatically populated
+* Verified assignment was saved in MongoDB
 
 ### Status
 
