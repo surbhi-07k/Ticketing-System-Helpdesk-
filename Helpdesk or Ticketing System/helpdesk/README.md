@@ -697,3 +697,56 @@ http://localhost:3000/uploads/file-name.png
 - Download PDFs
 - Download documents
 - Browser accessible URLs
+
+## Phase 28 - Get All Users API
+
+### Endpoint
+
+GET /admin/users
+
+### Access
+
+Admin Only
+
+### Features
+
+- List all users
+- Excludes password field
+- Sorted by newest users
+
+## Phase 29 - Update User API
+
+### Endpoint
+
+PATCH /admin/users/:id
+
+### Access
+
+Admin Only
+
+### Features
+
+- Change user role
+- Activate account
+- Deactivate account
+
+### Fields
+
+- role
+- isActive
+
+## Phase 30 - Delete User API
+
+### Endpoint
+
+DELETE /admin/users/:id
+
+### Access
+
+Admin Only
+
+### Features
+
+- Delete user account
+- User existence validation
+- Restricted to admins
