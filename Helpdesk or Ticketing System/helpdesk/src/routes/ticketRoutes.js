@@ -13,6 +13,7 @@ import {
 
 import protect from "../middleware/authMiddleware.js";
 import authorize from "../middleware/roleMiddleware.js";
+import validateTicket from "../middleware/validateTicket.js";
 
 const router =
   express.Router();
@@ -20,6 +21,7 @@ const router =
 router.post(
   "/",
   protect,
+  validateTicket,
   createTicket
 );
 

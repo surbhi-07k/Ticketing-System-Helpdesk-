@@ -21,12 +21,6 @@ export const createTicket = async (
       resolutionDeadline,
     } = calculateSLA(priority);
 
-    if (!title || !description) {
-      return res.status(400).json({
-        message:
-          "Title and description are required",
-      });
-    }
   
     const ticket =
       await Ticket.create({
