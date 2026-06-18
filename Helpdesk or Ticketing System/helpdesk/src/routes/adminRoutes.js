@@ -10,6 +10,7 @@ import {
   deleteUser,
   getOverviewAnalytics,
   getTicketsByStatus,
+  getTicketsByAgent,
 } from "../controllers/adminController.js";
 
 const router =
@@ -34,6 +35,13 @@ router.get(
   protect,
   authorize("admin"),
   getTicketsByStatus
+);
+
+router.get(
+  "/analytics/by-agent",
+  protect,
+  authorize("admin"),
+  getTicketsByAgent
 );
 
 router.patch(

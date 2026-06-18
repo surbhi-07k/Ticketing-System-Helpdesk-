@@ -788,3 +788,23 @@ Returns ticket counts grouped by status.
 - in-progress
 - resolved
 - closed
+
+## Phase 33 - Analytics By Agent API
+
+### Endpoint
+
+GET /admin/analytics/by-agent
+
+### Access
+
+Admin Only
+
+### Purpose
+
+Returns number of tickets assigned to each agent.
+
+### Features
+
+- Aggregation pipeline
+- Agent details lookup
+- Ticket count per agent

@@ -211,3 +211,65 @@ export const getTicketsByStatus =
       });
     }
   };
+
+export const getTicketsByAgent =
+  async (req, res) => {
+    try {
+      const stats =
+        await Ticket.aggregate([
+          {
+            $match: {
+              assignedTo: {
+                $ne: null,
+              },
+            },
+          },
+
+          {
+            $group: {
+              _id: "$assignedTo",
+              ticketCount: {
+                $sum: 1,
+              },
+            },
+          },
+
+          {
+            $lookup: {
+              from: "users",
+              localField: "_id",
+              foreignField: "_id",
+              as: "agent",
+            },
+          },
+
+          {
+            $unwind: "$agent",
+          },
+
+          {
+            $project: {
+              _id: 0,
+              agentId:
+                "$agent._id",
+              name:
+                "$agent.name",
+              email:
+                "$agent.email",
+              ticketCount: 1,
+            },
+          },
+        ]);
+
+      res.status(200).json({
+        message:
+          "Agent analytics fetched successfully",
+        stats,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message:
+          "Server Error",
+      });
+    }
+  };
