@@ -1,5 +1,6 @@
 import Ticket from "../models/Ticket.js";
 import User from "../models/User.js";
+import calculateSLA from "../services/slaService.js";
 
 export const createTicket = async (
   req,
@@ -15,13 +16,18 @@ export const createTicket = async (
       attachments,
     } = req.body;
 
+    const {
+      responseDeadline,
+      resolutionDeadline,
+    } = calculateSLA(priority);
+
     if (!title || !description) {
       return res.status(400).json({
         message:
           "Title and description are required",
       });
     }
-
+  
     const ticket =
       await Ticket.create({
         title,
@@ -29,9 +35,13 @@ export const createTicket = async (
         category,
         priority,
         customer: req.user._id,
+
         tags: tags || [],
         attachments:
           attachments || [],
+
+        responseDeadline,
+        resolutionDeadline,
       });
 
     res.status(201).json({
