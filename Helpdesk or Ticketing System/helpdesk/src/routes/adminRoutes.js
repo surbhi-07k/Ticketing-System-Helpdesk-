@@ -7,6 +7,7 @@ import authorize from "../middleware/roleMiddleware.js";
 import {
   getAllUsers,
   updateUser,
+  deleteUser,
 } from "../controllers/adminController.js";
 
 const router =
@@ -24,6 +25,13 @@ router.patch(
   protect,
   authorize("admin"),
   updateUser
+);
+
+router.delete(
+  "/users/:id",
+  protect,
+  authorize("admin"),
+  deleteUser
 );
 
 export default router;
