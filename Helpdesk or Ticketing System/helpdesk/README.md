@@ -767,3 +767,24 @@ Admin Only
 - Open tickets
 - Resolved today
 - Average resolution time (hours)
+
+## Phase 32 - Analytics By Status API
+
+### Endpoint
+
+GET /admin/analytics/by-status
+
+### Access
+
+Admin Only
+
+### Purpose
+
+Returns ticket counts grouped by status.
+
+### Status Types
+
+- open
+- in-progress
+- resolved
+- closed

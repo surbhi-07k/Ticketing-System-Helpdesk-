@@ -183,3 +183,31 @@ export const getOverviewAnalytics =
       });
     }
   };
+
+export const getTicketsByStatus =
+  async (req, res) => {
+    try {
+      const stats =
+        await Ticket.aggregate([
+          {
+            $group: {
+              _id: "$status",
+              count: {
+                $sum: 1,
+              },
+            },
+          },
+        ]);
+
+      res.status(200).json({
+        message:
+          "Status analytics fetched successfully",
+        stats,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message:
+          "Server Error",
+      });
+    }
+  };
