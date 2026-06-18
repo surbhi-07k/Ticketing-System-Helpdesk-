@@ -273,3 +273,82 @@ export const getTicketsByAgent =
       });
     }
   };
+
+export const getSLABreaches =
+  async (req, res) => {
+    try {
+      const tickets =
+        await Ticket.find({
+          status: {
+            $ne: "resolved",
+          },
+        })
+          .populate(
+            "customer",
+            "name email"
+          )
+          .populate(
+            "assignedTo",
+            "name email"
+          );
+
+      const breaches =
+        tickets.filter(
+          (ticket) => {
+            const now =
+              new Date();
+
+            const createdAt =
+              new Date(
+                ticket.createdAt
+              );
+
+            const diffHours =
+              (now - createdAt) /
+              (1000 * 60 * 60);
+
+            switch (
+              ticket.priority
+            ) {
+              case "urgent":
+                return (
+                  diffHours > 4
+                );
+
+              case "high":
+                return (
+                  diffHours > 8
+                );
+
+              case "medium":
+                return (
+                  diffHours > 24
+                );
+
+              case "low":
+                return (
+                  diffHours > 72
+                );
+
+              default:
+                return false;
+            }
+          }
+        );
+
+      res.status(200).json({
+        message:
+          "SLA breaches fetched successfully",
+        count:
+          breaches.length,
+        breaches,
+      });
+    } catch (error) {
+      console.error(error);
+
+      res.status(500).json({
+        message:
+          "Server Error",
+      });
+    }
+  };

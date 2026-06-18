@@ -808,3 +808,71 @@ Returns number of tickets assigned to each agent.
 - Aggregation pipeline
 - Agent details lookup
 - Ticket count per agent
+
+## Phase 34 - SLA Breaches API
+
+### Purpose
+
+Track tickets that have exceeded their allowed resolution time based on priority level.
+
+### Endpoint
+
+GET /api/admin/analytics/sla-breaches
+
+### Access
+
+Admin Only
+
+### SLA Resolution Rules
+
+| Priority | Resolution Due |
+| -------- | -------------- |
+| Urgent   | 4 Hours        |
+| High     | 8 Hours        |
+| Medium   | 24 Hours       |
+| Low      | 72 Hours       |
+
+### Logic
+
+A ticket is considered an SLA breach when:
+
+* The ticket is not resolved
+* The resolution deadline has passed based on its priority
+
+### Features
+
+* Detect overdue tickets
+* Filter unresolved tickets
+* Populate customer details
+* Populate assigned agent details
+* Return total breach count
+* Generate SLA breach reports for admins
+
+### Example Response
+
+```json
+{
+  "message": "SLA breaches fetched successfully",
+  "count": 4,
+  "breaches": [
+    {
+      "title": "Unable to login",
+      "priority": "high",
+      "status": "open"
+    }
+  ]
+}
+```
+
+### Testing Performed
+
+* Tested high priority breached tickets
+* Verified unresolved tickets appear in report
+* Verified resolved tickets are excluded
+* Verified customer population
+* Verified assigned agent population
+* Verified breach count calculation
+
+### Status
+
+Completed Successfully

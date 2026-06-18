@@ -11,6 +11,7 @@ import {
   getOverviewAnalytics,
   getTicketsByStatus,
   getTicketsByAgent,
+  getSLABreaches,
 } from "../controllers/adminController.js";
 
 const router =
@@ -42,6 +43,13 @@ router.get(
   protect,
   authorize("admin"),
   getTicketsByAgent
+);
+
+router.get(
+  "/analytics/sla-breaches",
+  protect,
+  authorize("admin"),
+  getSLABreaches
 );
 
 router.patch(
