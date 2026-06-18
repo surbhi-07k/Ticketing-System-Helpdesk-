@@ -750,3 +750,20 @@ Admin Only
 - Delete user account
 - User existence validation
 - Restricted to admins
+
+## Phase 31 - Analytics Overview API
+
+### Endpoint
+
+GET /admin/analytics/overview
+
+### Access
+
+Admin Only
+
+### Returns
+
+- Total tickets
+- Open tickets
+- Resolved today
+- Average resolution time (hours)

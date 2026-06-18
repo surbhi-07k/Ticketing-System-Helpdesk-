@@ -1,3 +1,4 @@
+import Ticket from "../models/Ticket.js";
 import User from "../models/User.js";
 
 export const getAllUsers =
@@ -90,6 +91,90 @@ export const deleteUser =
       res.status(200).json({
         message:
           "User deleted successfully",
+      });
+    } catch (error) {
+      res.status(500).json({
+        message:
+          "Server Error",
+      });
+    }
+  };
+
+export const getOverviewAnalytics =
+  async (req, res) => {
+    try {
+      // Total tickets
+      const totalTickets =
+        await Ticket.countDocuments();
+
+      // Open tickets
+      const openTickets =
+        await Ticket.countDocuments({
+          status: "open",
+        });
+
+      // Today's date range
+      const today =
+        new Date();
+
+      today.setHours(
+        0,
+        0,
+        0,
+        0
+      );
+
+      // Resolved today
+      const resolvedToday =
+        await Ticket.countDocuments({
+          status: "resolved",
+          updatedAt: {
+            $gte: today,
+          },
+        });
+
+      // Average resolution time
+      const resolvedTickets =
+        await Ticket.find({
+          status: "resolved",
+        });
+
+      let avgResolutionTime =
+        0;
+
+      if (
+        resolvedTickets.length >
+        0
+      ) {
+        const totalTime =
+          resolvedTickets.reduce(
+            (sum, ticket) => {
+              return (
+                sum +
+                (ticket.updatedAt -
+                  ticket.createdAt)
+              );
+            },
+            0
+          );
+
+        avgResolutionTime =
+          totalTime /
+          resolvedTickets.length;
+
+        avgResolutionTime =
+          Math.round(
+            avgResolutionTime /
+              (1000 * 60 * 60)
+          ); // hours
+      }
+
+      res.status(200).json({
+        totalTickets,
+        openTickets,
+        resolvedToday,
+        avgResolutionTimeHours:
+          avgResolutionTime,
       });
     } catch (error) {
       res.status(500).json({
