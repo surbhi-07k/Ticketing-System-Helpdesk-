@@ -1097,3 +1097,69 @@ Automatically distribute tickets among support agents based on workload.
 ### Status
 
 Completed Successfully
+
+## Phase 41 - Email Notifications
+
+### Purpose
+
+Send automatic email notifications for important ticket events.
+
+### Features
+
+* Email sent when a ticket is created
+* Email sent when a ticket status changes
+* Uses Nodemailer for email delivery
+* Uses Ethereal Email for development testing
+
+### Notifications
+
+#### Ticket Created
+
+* Sent to customer after ticket creation
+
+#### Ticket Status Updated
+
+* Sent to customer when status changes
+
+### Benefits
+
+* Better communication with users
+* Real-time ticket updates
+* Improved customer experience
+
+### Technologies Used
+
+* Nodemailer
+* Ethereal Email
+
+### Status
+
+Completed Successfully
+
+## Phase 42 - Express Validator
+
+### Purpose
+
+Validate incoming API requests before reaching controllers.
+
+### Features
+
+* Validates ticket creation requests
+* Ensures required fields exist
+* Validates category values
+* Validates priority values
+* Returns structured validation errors
+
+### Technologies
+
+* express-validator
+
+### Benefits
+
+* Cleaner controllers
+* Better error handling
+* More reliable API requests
+
+### Status
+
+Completed Successfully
