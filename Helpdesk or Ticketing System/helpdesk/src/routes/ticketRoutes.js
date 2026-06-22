@@ -11,9 +11,14 @@ import {
   deleteTicket,
 } from "../controllers/ticketController.js";
 
+import {
+  createTicketValidation,
+} from "../validators/ticketValidator.js";
+
 import protect from "../middleware/authMiddleware.js";
 import authorize from "../middleware/roleMiddleware.js";
 import validateTicket from "../middleware/validateTicket.js";
+import validate from "../middleware/validationResultMiddleware.js";
 
 const router =
   express.Router();
@@ -21,7 +26,8 @@ const router =
 router.post(
   "/",
   protect,
-  validateTicket,
+  createTicketValidation,
+  validate,
   createTicket
 );
 
