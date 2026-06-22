@@ -2,6 +2,7 @@ import Ticket from "../models/Ticket.js";
 import User from "../models/User.js";
 import calculateSLA from "../services/slaService.js";
 import checkSLABreach from "../utils/checkSLABreach.js";
+import sendEmail from "../services/emailService.js";
 
 export const createTicket = async (
   req,
@@ -76,6 +77,12 @@ export const createTicket = async (
         resolutionDeadline,
       });
 
+      await sendEmail(
+        req.user.email,
+        "Ticket Created",
+        `Your ticket "${ticket.title}" has been created successfully.`
+      );
+
     res.status(201).json({
       message:
         "Ticket created successfully",
@@ -89,6 +96,7 @@ export const createTicket = async (
     });
   }
 };
+
 
 export const getMyTickets = async (
   req,
@@ -224,6 +232,17 @@ export const updateTicketStatus =
       }
 
       await ticket.save();
+      
+      const customer =
+        await User.findById(
+          ticket.customer
+        );
+
+        await sendEmail(
+          customer.email,
+          "Ticket Status Updated",
+          `Your ticket "${ticket.title}" status is now ${ticket.status}.`
+        );
 
       res.status(200).json({
         message:
