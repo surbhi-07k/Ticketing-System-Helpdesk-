@@ -17,10 +17,38 @@ export const createTicket = async (
       attachments,
     } = req.body;
 
-    const agent = await User.findOne({
+    const agents = await User.find({
       role: "agent",
       isActive: true,
     });
+
+    let selectedAgent = null;
+
+    if (agents.length > 0) {
+      let minTickets = Infinity;
+
+      for (const agent of agents) {
+
+        const ticketCount =
+          await Ticket.countDocuments({
+            assignedTo: agent._id,
+            status: {
+              $in: [
+                "open",
+                "in-progress",
+                "waiting",
+              ],
+            },
+          });
+
+        if (
+          ticketCount < minTickets
+        ) {
+          minTickets = ticketCount;
+          selectedAgent = agent;
+        }
+      }
+    }
 
     const {
       responseDeadline,
@@ -35,9 +63,10 @@ export const createTicket = async (
         category,
         priority,
         customer: req.user._id,
-        assignedTo: agent
-          ? agent._id
-          : null,
+        assignedTo:
+          selectedAgent
+            ? selectedAgent._id
+            : null,
 
         tags: tags || [],
         attachments:

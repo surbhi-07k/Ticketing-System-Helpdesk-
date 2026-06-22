@@ -1067,3 +1067,33 @@ Automatically assign newly created tickets to an available support agent.
 ### Status
 
 Completed Successfully
+
+## Phase 40 - Least Busy Agent Auto Assignment
+
+### Purpose
+
+Automatically distribute tickets among support agents based on workload.
+
+### Features
+
+* Finds all active agents
+* Counts active tickets for each agent
+* Selects the agent with the fewest open tickets
+* Automatically assigns new tickets
+* Falls back to null when no agents exist
+
+### Active Ticket Statuses
+
+* open
+* in-progress
+* waiting
+
+### Benefits
+
+* Balanced workload distribution
+* Faster ticket handling
+* Fair ticket assignment
+
+### Status
+
+Completed Successfully
